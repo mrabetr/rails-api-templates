@@ -6,12 +6,8 @@ class JsonWebToken
     JWT.decode(token, nil,
                true, # Verify the signature of this token
                algorithm: 'RS256',
-               # iss: Rails.application.credentials.auth0[:domain],
-               # iss: 'https://dev-e3x3192t.eu.auth0.com/',
                iss: "https://#{ENV['AUTH0_DOMAIN']}/",
                verify_iss: true,
-               # aud: Rails.application.credentials.auth0[:api_identifier],
-               # aud: 'https://rails-secure-api',
                aud: ENV['AUTH0_API_AUDIENCE'],
                verify_aud: true) do |header|
       jwks_hash[header['kid']]

@@ -1,3 +1,7 @@
+def source_paths
+  Array(super) + [File.expand_path(File.dirname(__FILE__))]
+end
+
 def copy_and_replace(source, dest = nil)
   dest_file = dest.nil? ? source : dest
   copy_file(source, dest_file, force: true)
@@ -8,11 +12,13 @@ end
 inject_into_file 'Gemfile', before: 'group :development, :test do' do
   <<~RUBY
     gem 'jwt'
+
   RUBY
 end
 
 inject_into_file 'Gemfile', after: 'group :development, :test do' do
   <<-RUBY
+
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
@@ -49,9 +55,9 @@ after_bundle do
   # Routes
   ########################################
   # route "root to: 'pages#home'"
-  get 'api/public', to: 'public#public'
-  get 'api/private', to: 'private#private'
-  get 'api/private-scoped', to: 'private#private_scoped'
+  route "get 'api/public', to: 'public#public'"
+  route "get 'api/private', to: 'private#private'"
+  route "get 'api/private-scoped', to: 'private#private_scoped'"
 
   # Git ignore
   ########################################
