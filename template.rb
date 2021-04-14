@@ -1,6 +1,6 @@
 def copy_and_replace(source, dest = nil)
   dest_file = dest.nil? ? source : dest
-  copy_file("rails-api-templates/#{source}", dest_file, force: true)
+  copy_file(source, dest_file, force: true)
 end
 
 # GEMFILE
