@@ -3,4 +3,10 @@ Rails.application.routes.draw do
   get 'api/public' => 'public#public'
   get 'api/private' => 'private#private'
   get 'api/private-scoped' => 'private#private_scoped'
+  resources :messages
+  # namespace :api, defaults: { format: :json } do
+  #   namespace :v1 do
+  #     resources :messages
+  #   end
+  # end
 end
