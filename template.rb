@@ -27,10 +27,19 @@ end
 
 # JsonWebToken Class
 ########################################
+# The reason we're creating the new class in app/lib rather than lib is that
+# subdirectories under app are autoloaded by default.
 run 'mkdir app/lib'
 run 'touch app/lib/json_web_token.rb'
 
 copy_and_replace 'app/lib/json_web_token.rb'
+
+# Authorization Service
+########################################
+run 'mkdir app/services'
+run 'touch app/services/authorization_service.rb'
+
+copy_and_replace 'app/services/authorization_service.rb'
 
 # Controllers
 ########################################
