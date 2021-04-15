@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get 'api/private-scoped' => 'private#private_scoped'
   resources :messages
   # namespace :api, defaults: { format: :json } do
-  #   namespace :private_scoped do
+  #   namespace :v1 do
   #     resources :messages
   #   end
   # end

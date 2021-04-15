@@ -3,7 +3,8 @@ module Secured
 
   SCOPES = {
     '/api/private'    => nil,
-    '/api/private-scoped' => ['read:messages']
+    '/api/private-scoped' => ['read:messages'],
+    '/messages' => ['write:messages']
   }
 
   included do

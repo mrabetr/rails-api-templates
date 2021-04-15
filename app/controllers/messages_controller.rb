@@ -1,26 +1,37 @@
 class MessagesController < ApplicationController
   skip_before_action :authorize_request!, only: [:index, :show]
+  before_action :set_message, only: [:show, :update, :destroy]
 
   def index
-    messages = Message.all
-    render json: messages
+    @messages = Message.all
+    render json: @messages
   end
 
   def show
-    message = Message.find(params[:id])
-    render json: message
+    render json: @message
   rescue ActiveRecord::RecordNotFound
     head :not_found
   end
 
   def create
-    message = Message.create!(message_params)
-    render json: message, status: :created
+    @message = Message.new(message_params)
+    if @message.save
+      render json: @message, status: :created
+    else
+      render_error
+    end
+  end
+
+  def update
+    if @message.update(message_params)
+      render json: @message
+    else
+      render_error
+    end
   end
 
   def destroy
-    message = Message.find(params[:id])
-    message.delete
+    @message.delete
     head :no_content
   end
 
@@ -28,5 +39,14 @@ class MessagesController < ApplicationController
 
   def message_params
     params.require(:message).permit(:body, :published)
+  end
+
+  def set_message
+    @message = Message.find(params[:id])
+  end
+
+  def render_error
+    render json: { errors: message.errors.full_messages },
+      status: :unprocessable_entity
   end
 end
