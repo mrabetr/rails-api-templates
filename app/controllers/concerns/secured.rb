@@ -7,27 +7,19 @@ module Secured
   }
 
   included do
-    before_action :authenticate_request!
+    before_action :authorize_request!
   end
 
   private
 
-  def authenticate_request!
-    @auth_payload, @auth_header = auth_token
+  def authorize_request!
+    # @auth_payload is used to check the included scope
+    # request.headers comes from the http requests to the specific API endpoint
+    @auth_payload, @auth_header = AuthorizationService.new(request.headers).authenticate_request!
 
     render json: { errors: ['Insufficient scope'] }, status: :forbidden unless scope_included
   rescue JWT::VerificationError, JWT::DecodeError
     render json: { errors: ['Not Authenticated'] }, status: :unauthorized
-  end
-
-  def http_token
-    if request.headers['Authorization'].present?
-      request.headers['Authorization'].split(' ').last
-    end
-  end
-
-  def auth_token
-    JsonWebToken.verify(http_token)
   end
 
   def scope_included
